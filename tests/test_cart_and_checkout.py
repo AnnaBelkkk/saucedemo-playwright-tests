@@ -6,6 +6,7 @@ VALID_USER = "standard_user"
 VALID_PASSWORD = "secret_sauce"
 
 
+# Вспомогательная функция: логинится под стандартным пользователем и дожидается загрузки страницы товаров
 def login_as_standard_user(page: Page) -> None:
     page.goto(BASE_URL)
     page.fill("#user-name", VALID_USER)
@@ -14,6 +15,7 @@ def login_as_standard_user(page: Page) -> None:
     page.wait_for_url("**/inventory.html")
 
 
+# Тест проверяет добавление товара в корзину и отображение его в корзине
 def test_add_item_to_cart(page: Page) -> None:
     login_as_standard_user(page)
 
@@ -30,6 +32,7 @@ def test_add_item_to_cart(page: Page) -> None:
     assert "Sauce Labs Backpack" in cart_item.nth(0).inner_text()
 
 
+# Тест проверяет, что можно удалить один из ранее добавленных товаров из корзины
 def test_remove_item_from_cart(page: Page) -> None:
     login_as_standard_user(page)
 
@@ -48,6 +51,7 @@ def test_remove_item_from_cart(page: Page) -> None:
     assert "Sauce Labs Bike Light" in remaining_text
 
 
+# Тест проверяет полный сценpytest --tracing=onполнение формы и завершение покупки
 def test_full_checkout_flow(page: Page) -> None:
     login_as_standard_user(page)
 

@@ -7,6 +7,7 @@ VALID_PASSWORD = "secret_sauce"
 LOCKED_USER = "locked_out_user"
 
 
+# Вспомогательная функция для выполнения шага авторизации с заданными логином и паролем
 def perform_login(page: Page, username: str, password: str) -> None:
     page.goto(BASE_URL)
     page.fill("#user-name", username)
@@ -14,6 +15,7 @@ def perform_login(page: Page, username: str, password: str) -> None:
     page.click("#login-button")
 
 
+# Тест проверяет успешный логин стандартного пользователя и переход на страницу со списком товаров
 def test_successful_login(page: Page) -> None:
     perform_login(page, VALID_USER, VALID_PASSWORD)
 
@@ -21,6 +23,7 @@ def test_successful_login(page: Page) -> None:
     assert page.is_visible(".inventory_list")
 
 
+# Тест проверяет, что заблокированный пользователь не может войти и получает сообщение об ошибке
 def test_locked_out_user_login(page: Page) -> None:
     perform_login(page, LOCKED_USER, VALID_PASSWORD)
 
@@ -29,6 +32,7 @@ def test_locked_out_user_login(page: Page) -> None:
     assert "locked out" in error.inner_text().lower()
 
 
+# Тест проверяет, что при неверных учётных данных отображается ошибка о неправильном логине или пароле
 def test_invalid_credentials_login(page: Page) -> None:
     perform_login(page, "some_invalid_user", "wrong_password")
 
